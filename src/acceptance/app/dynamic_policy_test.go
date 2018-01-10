@@ -2,7 +2,6 @@ package app
 
 import (
 	"acceptance/config"
-	"fmt"
 
 	"github.com/cloudfoundry-incubator/cf-test-helpers/cf"
 	"github.com/cloudfoundry-incubator/cf-test-helpers/generator"
@@ -152,7 +151,7 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 
 	})
 
-	Context("when scaling by responsetime", func() {
+	FContext("when scaling by responsetime", func() {
 
 		JustBeforeEach(func() {
 			bindService := cf.Cf("bind-service", appName, instanceName, "-c", policy).Wait(cfg.DefaultTimeoutDuration())
@@ -162,7 +161,6 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 		AfterEach(func() {
 			if ticker != nil {
 				ticker.Stop()
-				fmt.Println("ticker stopped")
 			}
 			unbindService := cf.Cf("unbind-service", appName, instanceName).Wait(cfg.DefaultTimeoutDuration())
 			Expect(unbindService).To(Exit(0), "failed unbinding service from app")
@@ -181,7 +179,6 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 				go func() {
 					defer GinkgoRecover()
 					for _ = range ticker.C {
-						fmt.Println("ticker C, sent event 1")
 						Eventually(func() string {
 							return helpers.CurlAppWithTimeout(cfg, appName, "/slow/3000", 10*time.Second)
 						}, 10*time.Second, 1*time.Second).Should(ContainSubstring("dummy application with slow response"))
@@ -208,7 +205,6 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 				go func() {
 					defer GinkgoRecover()
 					for _ = range ticker.C {
-						fmt.Println("ticker C, sent event 2")
 						Eventually(func() string {
 							return helpers.CurlAppWithTimeout(cfg, appName, "/fast", 10*time.Second)
 						}, 10*time.Second, 1*time.Second).Should(ContainSubstring("dummy application with fast response"))
@@ -224,7 +220,7 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 
 	})
 
-	Context("when scaling by throughput", func() {
+	FContext("when scaling by throughput", func() {
 
 		JustBeforeEach(func() {
 			bindService := cf.Cf("bind-service", appName, instanceName, "-c", policy).Wait(cfg.DefaultTimeoutDuration())
@@ -235,7 +231,6 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 		AfterEach(func() {
 			if ticker != nil {
 				ticker.Stop()
-				fmt.Println("ticker stopped")
 			}
 			unbindService := cf.Cf("unbind-service", appName, instanceName).Wait(cfg.DefaultTimeoutDuration())
 			Expect(unbindService).To(Exit(0), "failed unbinding service from app")
@@ -254,7 +249,6 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 				go func() {
 					defer GinkgoRecover()
 					for _ = range ticker.C {
-						fmt.Println("ticker C, sent event 3")
 						Eventually(func() string {
 							return helpers.CurlAppWithTimeout(cfg, appName, "/fast", 10*time.Second)
 						}, 10*time.Second, 25*time.Millisecond).Should(ContainSubstring("dummy application with fast response"))
@@ -282,7 +276,6 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 				go func() {
 					defer GinkgoRecover()
 					for _ = range ticker.C {
-						fmt.Println("ticker C, sent event 3")
 						Eventually(func() string {
 							return helpers.CurlAppWithTimeout(cfg, appName, "/fast", 10*time.Second)
 						}, 10*time.Second, 1*time.Second).Should(ContainSubstring("dummy application with fast response"))
