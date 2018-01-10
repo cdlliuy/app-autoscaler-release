@@ -151,7 +151,7 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 
 	})
 
-	FContext("when scaling by responsetime", func() {
+	Context("when scaling by responsetime", func() {
 
 		JustBeforeEach(func() {
 			bindService := cf.Cf("bind-service", appName, instanceName, "-c", policy).Wait(cfg.DefaultTimeoutDuration())
@@ -220,7 +220,7 @@ var _ = Describe("AutoScaler dynamic policy", func() {
 
 	})
 
-	FContext("when scaling by throughput", func() {
+	Context("when scaling by throughput", func() {
 
 		JustBeforeEach(func() {
 			bindService := cf.Cf("bind-service", appName, instanceName, "-c", policy).Wait(cfg.DefaultTimeoutDuration())
