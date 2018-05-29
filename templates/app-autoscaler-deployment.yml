@@ -683,6 +683,8 @@ instance_groups:
           level: debug
         server:
           port: &scalingEnginePort 6104
+        health:
+          port: 6180
         defaultCoolDownSecs: 300
         lockSize: 32
         ca_cert: ((scalingengine_ca.ca))

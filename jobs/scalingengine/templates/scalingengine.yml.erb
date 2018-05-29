@@ -44,6 +44,9 @@ server:
     cert_file: /var/vcap/jobs/scalingengine/config/certs/scalingengine/server.crt
     ca_file: /var/vcap/jobs/scalingengine/config/certs/scalingengine/ca.crt
 
+health:
+    port:  <%= p("scalingengine.health.port") %>
+
 logging:
   level: <%= p("scalingengine.logging.level") %>
 
