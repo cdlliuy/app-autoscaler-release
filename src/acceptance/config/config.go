@@ -48,7 +48,8 @@ type Config struct {
 	CfJavaTimeout   int `json:"cf_java_timeout"`
 	NodeMemoryLimit int `json:"node_memory_limit"`
 
-	ASApiEndpoint string `json:"autoscaler_api"`
+	ASApiEndpoint   string `json:"autoscaler_api"`
+	ServiceOffering bool   `json:"service_offering"`
 }
 
 var defaults = Config{
@@ -135,6 +136,7 @@ func validate(t *testing.T, c *Config) {
 			}
 		}
 	}
+
 }
 
 func loadConfigFromPath(path string, config *Config) error {
@@ -251,4 +253,8 @@ func (c *Config) GetAdminPassword() string {
 
 func (c *Config) GetApiEndpoint() string {
 	return c.ApiEndpoint
+}
+
+func (c *Config) GetServiceOffering() bool {
+	return c.ServiceOffering
 }

@@ -15,8 +15,7 @@
   scaling_engine_port = p('api_server.scaling_engine.port')
   metrics_collector_host = p('api_server.metrics_collector.host')
   metrics_collector_port = p('api_server.metrics_collector.port')
-  service_broker_host = p('api_server.service_broker.host')
-  service_broker_port = p('api_server.service_broker.port')
+  service_offering = p("api_server.serviceOffering")
 
   params = {
     'port' => p('api_server.port'),
@@ -54,26 +53,42 @@
            'caCertFile' => "/var/vcap/jobs/apiserver/config/certs/metricscollector/ca.crt"
        },
     },
-    'serviceBroker' => {
-       'uri' => "https://" + service_broker_host + ":" + service_broker_port.to_s,
-       'tls' => {
-           'keyFile' => "/var/vcap/jobs/apiserver/config/certs/servicebroker/client.key",
-           'certFile' => "/var/vcap/jobs/apiserver/config/certs/servicebroker/client.crt",
-           'caCertFile' => "/var/vcap/jobs/apiserver/config/certs/servicebroker/ca.crt"
-       },
-    },
+    #'serviceOffering' => {
+    #    'enabled' => p('api_server.serviceOffering'),
+    #},
     'tls' => {
         'keyFile' => "/var/vcap/jobs/apiserver/config/certs/apiserver/server.key",
         'certFile' => "/var/vcap/jobs/apiserver/config/certs/apiserver/server.crt",
         'caCertFile' => "/var/vcap/jobs/apiserver/config/certs/apiserver/ca.crt"
     },
-    # 'publicTls' => {
-    #     'keyFile' => "/var/vcap/jobs/apiserver/config/certs/apiserver/public_server.key",
-    #     'certFile' => "/var/vcap/jobs/apiserver/config/certs/apiserver/public_server.crt",
-    #     'caCertFile' => "/var/vcap/jobs/apiserver/config/certs/apiserver/public_ca.crt"
-    # },
   }
 %>
+
+<% if service_offering %>
+    <% 
+        service_broker_host = p('api_server.service_broker.host')
+        service_broker_port = p('api_server.service_broker.port').to_s
+
+        params["serviceOffering"] = {
+        'enabled' => service_offering,
+        'serviceBroker' => {
+            'uri' => "https://" + service_broker_host + ":" + service_broker_port,
+            'tls' => {
+                'keyFile' => "/var/vcap/jobs/apiserver/config/certs/servicebroker/client.key",
+                'certFile' => "/var/vcap/jobs/apiserver/config/certs/servicebroker/client.crt",
+                'caCertFile' => "/var/vcap/jobs/apiserver/config/certs/servicebroker/ca.crt"
+            },
+        },
+    }
+    %>
+<% else %>
+    <% params["serviceOffering"] = {
+        'enabled' => service_offering,
+    }
+    %>
+<% end %> 
+
+
 
 <%=JSON.pretty_generate(params, :indentation => 2)%> 
 

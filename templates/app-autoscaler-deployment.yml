@@ -102,6 +102,7 @@ instance_groups:
     release: app-autoscaler
     properties:
       api_server:
+        serviceOffering: true
         db_config: &db_config
           idle_timeout: 1000
           max_connections: 10
