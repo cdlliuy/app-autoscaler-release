@@ -272,7 +272,7 @@ instance_groups:
             port: 7103
             keep_alive_time: 60s
             refresh_interval: 60s
-            collect_interval: 60s
+            collect_interval: 5s
             save_interval: 5s
             persist_metrics: true
             envelope_processor_count: 5
@@ -301,18 +301,18 @@ instance_groups:
           server_cert: ((eventgenerator_server.certificate))
           server_key: ((eventgenerator_server.private_key))
           aggregator:
-            aggregator_execute_interval: 40s
-            policy_poller_interval: 60s
+            aggregator_execute_interval: 5s
+            policy_poller_interval: 30s
             metric_poller_count: 20
             app_monitor_channel_size: 200
             save_interval: 5s
             app_metric_channel_size: 1000
           evaluator:
-            evaluation_manager_execute_interval: 60s
+            evaluation_manager_execute_interval: 5s
             evaluator_count: 20
             trigger_array_channel_size: 200
-          defaultStatWindowSecs: 120
-          defaultBreachDurationSecs: 120
+          defaultStatWindowSecs: 60
+          defaultBreachDurationSecs: 60 
           circuitBreaker:
             back_off_initial_interval: 5m
             back_off_max_interval: 120m
@@ -394,7 +394,7 @@ instance_groups:
         api_server:
           cache_ttl: 600
           http_client_timeout: 60000
-          service_offering_enabled: true
+          service_offering_enabled: false 
           db_config: &db_config
             idle_timeout: 60000
             max_connections: 10
